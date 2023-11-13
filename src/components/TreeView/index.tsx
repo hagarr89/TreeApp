@@ -8,19 +8,39 @@ const TreeView = ({
   getNodes,
   sourceName,
 }: {
-  data: INode[] | null;
+  data?: INode[] | null;
   getNodes?: (node?: INode) => Promise<INode[] | null>;
   sourceName?: string;
 }) => {
-  const [treeData, setTreeData] = useState<INode[] | null>(null);
+  const [treeData, setTreeData] = useState<INode[] | null>(data ? data : null);
+
+  const getDataFromLocalStorage = () => {
+    if (sourceName) return localStorage.getItem(sourceName);
+    return null;
+  };
+  const saveDataOnLocalStorage = (res?: INode[]) => {
+    const data = res ? res : treeData;
+    if (sourceName) localStorage.setItem(sourceName, JSON.stringify(data));
+  };
+
+  const loadData = async () => {
+    const res = getNodes && ((await getNodes()) ?? null);
+    if (res) {
+      saveDataOnLocalStorage(res);
+      setTreeData(res);
+    }
+  };
 
   useEffect(() => {
-    if (data) setTreeData(data);
-  }, [data]);
+    if (treeData) return;
+    const localFiles = getDataFromLocalStorage();
+    const filesLocal: INode[] | null = localFiles
+      ? JSON.parse(localFiles)
+      : null;
+    if (filesLocal) setTreeData(filesLocal);
+    else loadData();
+  }, []);
 
-  const UpdateTree = () => {
-    if (sourceName) localStorage.setItem(sourceName, JSON.stringify(treeData));
-  };
   return (
     <Card>
       {treeData?.map((rootNode: INode) => (
@@ -28,7 +48,7 @@ const TreeView = ({
           key={rootNode.name}
           node={rootNode}
           getNodes={getNodes}
-          onUpdateNodeTree={UpdateTree}
+          onUpdateNodeTree={saveDataOnLocalStorage}
           sourceName={sourceName}
         />
       ))}

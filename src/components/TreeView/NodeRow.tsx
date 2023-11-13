@@ -33,7 +33,10 @@ export default function NodeRow({
   sourceName?: string;
 }) {
   const icon = getIcon(node, sourceName && sourceName);
-  const arrow = node?.isGroup ? (
+  const loader = isLoading ? <Loader /> : null;
+  const arrow = loader ? (
+    loader
+  ) : node?.isGroup ? (
     isExpanded ? (
       <ExpandLessIcon />
     ) : (
