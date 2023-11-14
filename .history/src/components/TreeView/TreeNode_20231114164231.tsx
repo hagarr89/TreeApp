@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NodeRow from "./NodeRow";
 import { INode } from "../../App";
 import "./index.scss";
-import { CardContent, Collapse } from "@mui/material";
+import { CardContent } from "@mui/material";
 
 export const TreeNode = ({
   node,

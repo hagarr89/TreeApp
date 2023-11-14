@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NodeRow from "./NodeRow";
 import { INode } from "../../App";
 import "./index.scss";
-import { CardContent, Collapse } from "@mui/material";
+import { CardContent } from "@mui/material";
 
 export const TreeNode = ({
   node,
@@ -49,7 +49,7 @@ export const TreeNode = ({
           {...(sourceName && { sourceName })}
         />
       </div>
-      <Collapse in={!isLoading && isExpanded} timeout="auto" unmountOnExit>
+      {!isLoading && isExpanded && node?.children ? (
         <CardContent className="child-nodes">
           {node?.children?.map((childNode) => (
             <div key={childNode.name}>
@@ -62,7 +62,7 @@ export const TreeNode = ({
             </div>
           ))}
         </CardContent>
-      </Collapse>
+      ) : null}
     </div>
   );
 };
