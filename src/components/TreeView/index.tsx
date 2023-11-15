@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { TreeNode } from "./TreeNode";
 import { INode } from "../../App";
 import { Card } from "@mui/material";
@@ -50,6 +50,7 @@ const TreeView = ({
           getNodes={getNodes}
           onUpdateNodeTree={saveDataOnLocalStorage}
           sourceName={sourceName}
+          index={0}
         />
       ))}
     </Card>

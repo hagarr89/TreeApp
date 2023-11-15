@@ -2,18 +2,20 @@ import React, { useState } from "react";
 import NodeRow from "./NodeRow";
 import { INode } from "../../App";
 import "./index.scss";
-import { CardContent, Collapse } from "@mui/material";
+import { List, Collapse } from "@mui/material";
 
 export const TreeNode = ({
   node,
   getNodes,
   onUpdateNodeTree,
   sourceName,
+  index,
 }: {
   node: INode;
   getNodes?: (node?: INode) => Promise<INode[] | null>;
   onUpdateNodeTree: () => void;
   sourceName?: string;
+  index: number;
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,11 +40,9 @@ export const TreeNode = ({
 
   return (
     <div className="tree-node">
-      <div
-        onClick={onClickNode}
-        className={`node-toggle ${isExpanded ? "expanded" : ""}`}
-      >
+      <div onClick={onClickNode}>
         <NodeRow
+          index={index}
           node={node}
           isLoading={isLoading}
           isExpanded={isExpanded}
@@ -50,18 +50,18 @@ export const TreeNode = ({
         />
       </div>
       <Collapse in={!isLoading && isExpanded} timeout="auto" unmountOnExit>
-        <CardContent className="child-nodes">
+        <List className="child-nodes">
           {node?.children?.map((childNode) => (
-            <div key={childNode.name}>
-              <TreeNode
-                node={childNode}
-                getNodes={getNodes}
-                onUpdateNodeTree={onUpdateNodeTree}
-                {...(sourceName && { sourceName })}
-              />
-            </div>
+            <TreeNode
+              key={childNode.name}
+              node={childNode}
+              getNodes={getNodes}
+              index={index + 1}
+              onUpdateNodeTree={onUpdateNodeTree}
+              {...(sourceName && { sourceName })}
+            />
           ))}
-        </CardContent>
+        </List>
       </Collapse>
     </div>
   );

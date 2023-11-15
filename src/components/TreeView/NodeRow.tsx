@@ -1,7 +1,12 @@
 import { ReactComponent as Loader } from "../../assets/loader.svg";
 import { INode } from "../../App";
 import Avatar from "@mui/material/Avatar";
-import { CardHeader } from "@mui/material";
+import {
+  ListItemAvatar,
+  ListItemText,
+  ListItem,
+  ListItemButton,
+} from "@mui/material";
 
 import Folder from "@mui/icons-material/Folder";
 import File from "@mui/icons-material/Article";
@@ -26,11 +31,13 @@ export default function NodeRow({
   isExpanded,
   isLoading,
   sourceName,
+  index,
 }: {
   node: INode;
   isExpanded: boolean;
   isLoading: boolean;
   sourceName?: string;
+  index: number;
 }) {
   const icon = getIcon(node, sourceName && sourceName);
   const loader = isLoading ? <Loader /> : null;
@@ -44,12 +51,14 @@ export default function NodeRow({
     )
   ) : null;
   return (
-    <CardHeader
-      classes={{ action: "actionIcon" }}
-      avatar={<Avatar>{icon}</Avatar>}
-      action={arrow}
-      title={node?.name}
-      subheader={node?.desc}
-    />
+    <ListItemButton>
+      <ListItem sx={{ paddingLeft: 2 * index }}>
+        <ListItemAvatar>
+          <Avatar>{icon}</Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={node?.name} secondary={node?.desc} />
+        {arrow}
+      </ListItem>
+    </ListItemButton>
   );
 }
