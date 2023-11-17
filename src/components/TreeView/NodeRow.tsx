@@ -22,6 +22,7 @@ const getIcon = (node: INode, sourceName?: string) => {
     if (node?.isGroup) return <Folder />;
     return <File />;
   }
+  //ADD- new source type icons
   if (node?.isGroup) return <Groups />;
   return <Person />;
 };
@@ -56,7 +57,11 @@ export default function NodeRow({
         <ListItemAvatar>
           <Avatar sx={{ bgcolor: node?.color }}>{icon}</Avatar>
         </ListItemAvatar>
-        <ListItemText primary={node?.name} secondary={node?.desc} />
+        <ListItemText
+          classes={{ root: "pr" }}
+          primary={node?.name}
+          secondary={node?.desc}
+        />
         {arrow}
       </ListItem>
     </ListItemButton>
