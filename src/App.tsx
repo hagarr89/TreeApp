@@ -6,6 +6,7 @@ export interface INode {
   name: string;
   desc?: string;
   isGroup: boolean;
+  color?: string;
   children?: INode[];
 }
 

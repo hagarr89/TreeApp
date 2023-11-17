@@ -54,7 +54,7 @@ export default function NodeRow({
     <ListItemButton>
       <ListItem sx={{ paddingLeft: 2 * index }}>
         <ListItemAvatar>
-          <Avatar>{icon}</Avatar>
+          <Avatar sx={{ bgcolor: node?.color }}>{icon}</Avatar>
         </ListItemAvatar>
         <ListItemText primary={node?.name} secondary={node?.desc} />
         {arrow}
