@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import NodeRow from "./NodeRow";
-import { INode } from "../../App";
-import "./index.scss";
+import { INode } from "./index";
 import { List, Collapse } from "@mui/material";
 
 export const TreeNode = ({

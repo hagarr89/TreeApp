@@ -1,5 +1,5 @@
 import { ReactComponent as Loader } from "../../assets/loader.svg";
-import { INode } from "../../App";
+import { INode } from "./index";
 import Avatar from "@mui/material/Avatar";
 import {
   ListItemAvatar,

@@ -1,6 +1,8 @@
-import {INode} from '../../App'
+import {INode} from './index'
 import {IFile, fetchFiles} from '../../services/fileSystem'
 
+
+//Files helper to match node type to fix with file type
 export const replaceFilesToNode = (node: IFile) => {
   const { name, size, type, color="#bdbdbd" } = node;
   const desc =  size;
@@ -12,6 +14,7 @@ export const replaceFilesToNode = (node: IFile) => {
   } 
 };
 
+//Files helper to get files async
 export const getFiles = async (node?: INode) => {
  let data:INode[] | null= null;
   if (!node || node?.isGroup ) {
@@ -22,3 +25,5 @@ export const getFiles = async (node?: INode) => {
 
 };
 
+
+//ADD- any new type of source

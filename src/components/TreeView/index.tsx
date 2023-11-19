@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import { TreeNode } from "./TreeNode";
-import { INode } from "../../App";
 import { Card } from "@mui/material";
+import "./index.scss";
+
+export interface INode {
+  name: string;
+  desc?: string;
+  isGroup: boolean;
+  color?: string;
+  children?: INode[];
+}
 
 const TreeView = ({
   data,
@@ -15,7 +23,10 @@ const TreeView = ({
   const [treeData, setTreeData] = useState<INode[] | null>(data ? data : null);
 
   const getDataFromLocalStorage = () => {
-    if (sourceName) return localStorage.getItem(sourceName);
+    if (sourceName) {
+      const localData = localStorage.getItem(sourceName) as string;
+      return JSON.parse(localData);
+    }
     return null;
   };
   const saveDataOnLocalStorage = (res?: INode[]) => {
@@ -33,16 +44,13 @@ const TreeView = ({
 
   useEffect(() => {
     if (treeData) return;
-    const localFiles = getDataFromLocalStorage();
-    const filesLocal: INode[] | null = localFiles
-      ? JSON.parse(localFiles)
-      : null;
-    if (filesLocal) setTreeData(filesLocal);
+    const localData: INode[] | null = getDataFromLocalStorage() ?? null;
+    if (localData) setTreeData(localData);
     else loadData();
   }, []);
 
   return (
-    <Card>
+    <Card classes={{ root: "tree" }}>
       {treeData?.map((rootNode: INode) => (
         <TreeNode
           key={rootNode.name}

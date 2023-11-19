@@ -7,6 +7,7 @@ export interface IFile {
     size?:string;
 }
 
+// fake api call for files
  export const fetchFiles = ()=>{
        return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -15,13 +16,7 @@ export interface IFile {
     });
 }
 
-const renderFileName = (fileName:string, type:string)=>{
-    const fileNameArray = fileName.split('.');
-    if(type === 'Folder'){
-        return fileNameArray[0];
-    }
-    return fileName;
-}
+//genrate
 
 const genrateFile = () => {
     const fileName = faker.system.commonFileName();
@@ -33,6 +28,26 @@ const genrateFile = () => {
     }
     return file;
 }
+ const genrateFiles = () => {
+    let files:IFile[] | [] = [];
+    const repeat =  Math.floor(Math.random() * 5) + 1;
+    for(let i =0 ; i < repeat; i++) {
+        const file =  genrateFile();
+        files = [...files ,file]
+    }
+    return files;
+}
+
+//Helpers
+const renderFileName = (fileName:string, type:string)=>{
+    const fileNameArray = fileName.split('.');
+    if(type === 'Folder'){
+        return fileNameArray[0];
+    }
+    return fileName;
+}
+
+
 const genertaeFileType = (typeFile:string)=>{   
     const types  = ['Folder', typeFile];
     const type = types[Math.floor(Math.random() * types.length)];  
@@ -44,16 +59,4 @@ const genertaeFileType = (typeFile:string)=>{
     }
     
 }
- const genrateFiles = () => {
-    let files:IFile[] | [] = [];
-    const repeat =  Math.floor(Math.random() * 5) + 1;
-    for(let i =0 ; i < repeat; i++) {
-        const file =  genrateFile();
-        files = [...files ,file]
-    }
-    return files;
-}
-
-
-
 
