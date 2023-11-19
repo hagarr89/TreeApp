@@ -19,7 +19,7 @@ function useSearch<T extends  ISearchDefualtProps<T>>({data , searchStr}:ISearch
 
   const filterByName = (data:T[])=>{
     const res:T[]  =  data  
-        ?.filter((item) => item?.name.indexOf(searchStr) > -1)
+        ?.filter((item) => item?.name?.toLowerCase().indexOf(searchStr.toLocaleLowerCase()) > -1)
         ?.map((item) => ({
         ...item,
         ...(item?.children && {children: filterByName(item.children) })

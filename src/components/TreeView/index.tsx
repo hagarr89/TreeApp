@@ -31,10 +31,7 @@ const TreeView = ({
     return null;
   };
   const saveDataOnLocalStorage = (res?: INode[]) => {
-    const data = res ? res : treeData;
-    console.log("saveDataOnLocalStorage treeData:", treeData);
-    console.log("saveDataOnLocalStorage res:", res);
-
+    const data = res ? res : searchData;
     if (sourceName) localStorage.setItem(sourceName, JSON.stringify(data));
 
     setTreeData(data);
