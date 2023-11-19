@@ -1,18 +1,30 @@
 import { useState, useEffect } from "react";
 import { TreeNode } from "./TreeNode";
-import { INode } from "../../App";
 import { Card } from "@mui/material";
-
+import useSearch from "../../hooks/useSearch";
+export interface INode {
+  name: string;
+  desc?: string;
+  isGroup: boolean;
+  color?: string;
+  children?: INode[];
+}
 const TreeView = ({
   data,
   getNodes,
   sourceName,
+  searchStr,
 }: {
   data?: INode[] | null;
   getNodes?: (node?: INode) => Promise<INode[] | null>;
   sourceName?: string;
+  searchStr: string;
 }) => {
   const [treeData, setTreeData] = useState<INode[] | null>(data ? data : null);
+  const searchData = useSearch<INode>({
+    data: treeData,
+    searchStr,
+  });
 
   const getDataFromLocalStorage = () => {
     if (sourceName) return localStorage.getItem(sourceName);
@@ -20,7 +32,12 @@ const TreeView = ({
   };
   const saveDataOnLocalStorage = (res?: INode[]) => {
     const data = res ? res : treeData;
+    console.log("saveDataOnLocalStorage treeData:", treeData);
+    console.log("saveDataOnLocalStorage res:", res);
+
     if (sourceName) localStorage.setItem(sourceName, JSON.stringify(data));
+
+    setTreeData(data);
   };
 
   const loadData = async () => {
@@ -43,7 +60,7 @@ const TreeView = ({
 
   return (
     <Card>
-      {treeData?.map((rootNode: INode) => (
+      {searchData?.map((rootNode: INode) => (
         <TreeNode
           key={rootNode.name}
           node={rootNode}

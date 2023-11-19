@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NodeRow from "./NodeRow";
-import { INode } from "../../App";
+import { INode } from "./index";
 import "./index.scss";
 import { List, Collapse } from "@mui/material";
 
@@ -30,6 +30,7 @@ export const TreeNode = ({
       const nodes = getNodes ? await getNodes(node) : null;
       if (nodes) {
         node.children = nodes;
+        console.log("onclick", node);
         onUpdateNodeTree();
         setIsExpanded(!isExpanded);
       }

@@ -1,4 +1,4 @@
-import {INode} from '../../App'
+import {INode} from './index'
 import {IFile, fetchFiles} from '../../services/fileSystem'
 
 export const replaceFilesToNode = (node: IFile) => {
