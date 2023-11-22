@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { TreeNode } from "./TreeNode";
 import { Card } from "@mui/material";
 import "./index.scss";
+import { UpdateTree } from "./helper";
 
 export interface INode {
   name: string;
@@ -42,6 +43,13 @@ const TreeView = ({
     }
   };
 
+  const handelUpdateTree = (newNode: INode) => {
+    const res = treeData ? UpdateTree(treeData, newNode) : null;
+    console.log("res", res);
+    setTreeData(res);
+    saveDataOnLocalStorage(res);
+  };
+
   useEffect(() => {
     if (treeData) return;
     const localData: INode[] | null = getDataFromLocalStorage() ?? null;
@@ -56,7 +64,7 @@ const TreeView = ({
           key={rootNode.name}
           node={rootNode}
           getNodes={getNodes}
-          onUpdateNodeTree={saveDataOnLocalStorage}
+          onUpdateNodeTree={handelUpdateTree}
           sourceName={sourceName}
           index={0}
         />

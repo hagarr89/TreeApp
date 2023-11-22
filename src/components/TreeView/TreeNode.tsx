@@ -12,7 +12,7 @@ export const TreeNode = ({
 }: {
   node: INode;
   getNodes?: (node?: INode) => Promise<INode[] | null>;
-  onUpdateNodeTree: () => void;
+  onUpdateNodeTree: (newNode: INode) => void;
   sourceName?: string;
   index: number;
 }) => {
@@ -28,8 +28,8 @@ export const TreeNode = ({
       setIsLoading(true);
       const nodes = getNodes ? await getNodes(node) : null;
       if (nodes) {
-        node.children = nodes;
-        onUpdateNodeTree();
+        const newNode = { ...node, children: nodes };
+        onUpdateNodeTree(newNode);
         setIsExpanded(!isExpanded);
       }
     } finally {

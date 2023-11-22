@@ -1,6 +1,21 @@
 import {INode} from './index'
 import {IFile, fetchFiles} from '../../services/fileSystem'
 
+export const UpdateTree:INode[] | null = (tree: INode[] , newItem:INode) => {
+  if(tree && Array.isArray(tree)){
+     return tree.map((item:INode) =>{
+    console.log('item children: ', item?.children)
+        console.log('tree: ' , tree)
+
+       return item?.name === newItem.name ? newItem : {
+        ...(item?.children ? {...item, children: UpdateTree(item.children, newItem) } : item),
+        }
+    })
+  }
+
+    return null;
+  }
+
 
 //Files helper to match node type to fix with file type
 export const replaceFilesToNode = (node: IFile) => {
@@ -22,8 +37,25 @@ export const getFiles = async (node?: INode) => {
      data =  res?.map((node: IFile) => replaceFilesToNode(node)) ?? [];
   };
      return data;
-
 };
 
 
-//ADD- any new type of source
+
+
+  export const getDataFromLocalStorage = (sourceName:string) => {
+     const itemsStrinigfy = localStorage.getItem(sourceName) as string ;
+     const localData = JSON.parse(itemsStrinigfy);
+     console.log('localData' , localData)
+    if (localData) {
+      return localData
+    }
+    return null;
+  };
+
+  export const saveDataOnLocalStorage = <T>(data:T[] ,sourceName?:string ) => {
+    if(sourceName){
+      localStorage.setItem(sourceName, JSON.stringify(data));
+    }
+  };
+
+
