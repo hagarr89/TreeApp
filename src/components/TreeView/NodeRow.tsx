@@ -1,6 +1,8 @@
 import { ReactComponent as Loader } from "../../assets/loader.svg";
 import { INode } from "./index";
 import Avatar from "@mui/material/Avatar";
+import { faker } from "@faker-js/faker";
+
 import {
   ListItemAvatar,
   ListItemText,
@@ -16,9 +18,10 @@ import Person from "@mui/icons-material/Person";
 
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useEffect, useState } from "react";
 
-const getIcon = (node: INode, sourceName?: string) => {
-  if (sourceName === "FILES") {
+const getIcon = (node: INode, source?: string) => {
+  if (source === "FILES") {
     if (node?.isGroup) return <Folder />;
     return <File />;
   }
@@ -26,21 +29,21 @@ const getIcon = (node: INode, sourceName?: string) => {
   if (node?.isGroup) return <Groups />;
   return <Person />;
 };
-
 export default function NodeRow({
   node,
   isExpanded,
   isLoading,
-  sourceName,
+  source,
   index,
 }: {
   node: INode;
   isExpanded: boolean;
   isLoading: boolean;
-  sourceName?: string;
+  source?: string;
   index: number;
 }) {
-  const icon = getIcon(node, sourceName && sourceName);
+  const [color, setColor] = useState<string>();
+  const icon = getIcon(node, source && source);
   const loader = isLoading ? <Loader /> : null;
   const arrow = loader ? (
     loader
@@ -51,11 +54,16 @@ export default function NodeRow({
       <ExpandMoreIcon />
     )
   ) : null;
+
+  useEffect(() => {
+    const bgColor = faker.color.rgb({ casing: "upper" });
+    setColor(bgColor);
+  }, []);
   return (
     <ListItemButton>
       <ListItem sx={{ paddingLeft: 2 * index }}>
         <ListItemAvatar>
-          <Avatar sx={{ bgcolor: node?.color }}>{icon}</Avatar>
+          <Avatar sx={{ bgcolor: color }}>{icon}</Avatar>
         </ListItemAvatar>
         <ListItemText
           classes={{ root: "pr" }}

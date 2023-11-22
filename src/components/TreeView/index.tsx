@@ -8,37 +8,28 @@ export interface INode {
   name: string;
   desc?: string;
   isGroup: boolean;
-  color?: string;
   children?: INode[];
 }
 
 const TreeView = ({
   data,
   getNodes,
-  sourceName,
+  source,
+  getDate,
+  saveData,
 }: {
   data?: INode[] | null;
   getNodes?: (node?: INode) => Promise<INode[] | null>;
-  sourceName?: string;
+  source?: string;
+  getDate?: (source: string) => INode[];
+  saveData?: (data: INode[], source: string) => void;
 }) => {
   const [treeData, setTreeData] = useState<INode[] | null>(data ? data : null);
 
-  const getDataFromLocalStorage = () => {
-    if (sourceName) {
-      const localData = localStorage.getItem(sourceName) as string;
-      return JSON.parse(localData);
-    }
-    return null;
-  };
-  const saveDataOnLocalStorage = (res?: INode[]) => {
-    const data = res ? res : treeData;
-    if (sourceName) localStorage.setItem(sourceName, JSON.stringify(data));
-  };
-
-  const loadData = async () => {
+  const initialLoadData = async () => {
     const res = getNodes && ((await getNodes()) ?? null);
     if (res) {
-      saveDataOnLocalStorage(res);
+      source && saveData && saveData(res, source);
       setTreeData(res);
     }
   };
@@ -47,15 +38,15 @@ const TreeView = ({
     const res = treeData && UpdateTree(treeData, newNode);
     if (res) {
       setTreeData(res);
-      saveDataOnLocalStorage(res);
+      source && saveData && saveData(res, source);
     }
   };
 
   useEffect(() => {
     if (treeData) return;
-    const localData: INode[] | null = getDataFromLocalStorage() ?? null;
+    const localData = source && getDate && getDate(source);
     if (localData) setTreeData(localData);
-    else loadData();
+    else initialLoadData();
   }, []);
 
   return (
@@ -66,7 +57,7 @@ const TreeView = ({
           node={rootNode}
           getNodes={getNodes}
           onUpdateNodeTree={handelUpdateTree}
-          sourceName={sourceName}
+          source={source}
           index={0}
         />
       ))}

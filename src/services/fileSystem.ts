@@ -3,7 +3,6 @@ import { faker } from '@faker-js/faker';
 export interface IFile {
     name:string;
     type:string;
-    color:string;
     size?:string;
 }
 
@@ -55,7 +54,6 @@ const genertaeFileType = (typeFile:string)=>{
     return {
        ...(size && {size}),
         type,
-        color:faker.color.rgb({ casing: 'upper' })
     }
     
 }

@@ -12,12 +12,11 @@ export const UpdateTree = (tree: INode[], newItem:INode):INode[] => {
 
 //Files helper to match node type to fix with file type
 export const replaceFilesToNode = (node: IFile) => {
-  const { name, size, type, color="#bdbdbd" } = node;
+  const { name, size, type} = node;
   const desc =  size;
   return {
     name,
     ...(desc && {desc}),
-    color:color,
     isGroup: type === "Folder" ? true : false,
   } 
 };
@@ -35,20 +34,18 @@ export const getFiles = async (node?: INode) => {
 
 
 
-  export const getDataFromLocalStorage = (sourceName:string) => {
-     const itemsStrinigfy = localStorage.getItem(sourceName) as string ;
+  export const getDataFromLocalStorage = (source:string) => {
+     const itemsStrinigfy = localStorage.getItem(source) as string ;
      const localData = JSON.parse(itemsStrinigfy);
-     console.log('localData' , localData)
     if (localData) {
       return localData
     }
     return null;
   };
 
-  export const saveDataOnLocalStorage = <T>(data:T[] ,sourceName?:string ) => {
-    if(sourceName){
-      localStorage.setItem(sourceName, JSON.stringify(data));
-    }
+  export const saveDataOnLocalStorage = <T>(data:T[] ,source:string ) => {
+    if(source) localStorage.setItem(source, JSON.stringify(data));
+  
   };
 
 

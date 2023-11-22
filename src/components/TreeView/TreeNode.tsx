@@ -7,13 +7,13 @@ export const TreeNode = ({
   node,
   getNodes,
   onUpdateNodeTree,
-  sourceName,
+  source,
   index,
 }: {
   node: INode;
   getNodes?: (node?: INode) => Promise<INode[] | null>;
   onUpdateNodeTree: (newNode: INode) => void;
-  sourceName?: string;
+  source?: string;
   index: number;
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -45,7 +45,7 @@ export const TreeNode = ({
           node={node}
           isLoading={isLoading}
           isExpanded={isExpanded}
-          {...(sourceName && { sourceName })}
+          {...(source && { source })}
         />
       </div>
       <Collapse in={!isLoading && isExpanded} timeout="auto" unmountOnExit>
@@ -57,7 +57,7 @@ export const TreeNode = ({
               getNodes={getNodes}
               index={index + 1}
               onUpdateNodeTree={onUpdateNodeTree}
-              {...(sourceName && { sourceName })}
+              {...(source && { source })}
             />
           ))}
         </List>
