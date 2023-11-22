@@ -44,10 +44,11 @@ const TreeView = ({
   };
 
   const handelUpdateTree = (newNode: INode) => {
-    const res = treeData ? UpdateTree(treeData, newNode) : null;
-    console.log("res", res);
-    setTreeData(res);
-    saveDataOnLocalStorage(res);
+    const res = treeData && UpdateTree(treeData, newNode);
+    if (res) {
+      setTreeData(res);
+      saveDataOnLocalStorage(res);
+    }
   };
 
   useEffect(() => {

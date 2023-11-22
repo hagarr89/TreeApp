@@ -1,19 +1,12 @@
 import {INode} from './index'
 import {IFile, fetchFiles} from '../../services/fileSystem'
 
-export const UpdateTree:INode[] | null = (tree: INode[] , newItem:INode) => {
-  if(tree && Array.isArray(tree)){
-     return tree.map((item:INode) =>{
-    console.log('item children: ', item?.children)
-        console.log('tree: ' , tree)
-
+export const UpdateTree = (tree: INode[], newItem:INode):INode[] => {
+  return tree.map((item:INode) =>{
        return item?.name === newItem.name ? newItem : {
         ...(item?.children ? {...item, children: UpdateTree(item.children, newItem) } : item),
         }
     })
-  }
-
-    return null;
   }
 
 
