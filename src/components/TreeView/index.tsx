@@ -3,16 +3,16 @@ import { TreeNode } from "./TreeNode";
 import { Card } from "@mui/material";
 import "./index.scss";
 import { UpdateTree } from "./helper";
-import { IFile } from "../../services/fileSystem";
+import { List, Collapse } from "@mui/material";
 
 export interface INode {
   name: string;
   desc?: string;
-  isGroup: boolean;
+  isGroup?: boolean;
   children?: INode[];
 }
 
-const TreeView = ({
+const TreeView = <T extends INode>({
   data,
   getNodes,
   source,
@@ -20,24 +20,27 @@ const TreeView = ({
   saveData,
   render,
 }: {
-  data?: INode[] | IFile[] | null;
-  getNodes?: (node?: INode) => Promise<INode[] | null>;
+  data?: T[] | null;
+  getNodes?: (node?: T) => Promise<T[] | null>;
   source?: string;
-  getDate?: (source: string) => INode[];
-  saveData?: (data: INode[], source: string) => void;
-  render: (data: INode) => ReactElement;
+  getDate?: (source: string) => T[];
+  saveData?: (data: T[], source: string) => void;
+  render: (data: T) => ReactElement;
 }) => {
-  const [treeData, setTreeData] = useState<INode[] | null>(data ? data : null);
+  const [treeData, setTreeData] = useState<T[] | null>(data ? data : null);
 
   const initialLoadData = async () => {
-    const res = getNodes && ((await getNodes()) ?? null);
-    if (res) {
-      source && saveData && saveData(res, source);
-      setTreeData(res);
+    try {
+      const res = getNodes && ((await getNodes()) ?? null);
+      if (res) {
+        source && saveData && saveData(res, source);
+        setTreeData(res);
+      }
+    } finally {
     }
   };
 
-  const handelUpdateTree = (newNode: INode) => {
+  const handelUpdateTree = (newNode: T) => {
     const res = treeData && UpdateTree(treeData, newNode);
     if (res) {
       setTreeData(res);
@@ -46,6 +49,7 @@ const TreeView = ({
   };
 
   useEffect(() => {
+    console.log("use effect treedata", treeData);
     if (treeData) return;
     const localData = source && getDate && getDate(source);
     if (localData) setTreeData(localData);
@@ -54,17 +58,19 @@ const TreeView = ({
 
   return (
     <Card classes={{ root: "tree" }}>
-      {treeData?.map((rootNode: INode) => (
-        <TreeNode
-          key={rootNode.name}
-          node={rootNode}
-          getNodes={getNodes}
-          onUpdateNodeTree={handelUpdateTree}
-          source={source}
-          index={0}
-          render={render}
-        />
-      ))}
+      <List className="tree">
+        {treeData?.map((rootNode: T) => (
+          <TreeNode<T>
+            key={rootNode.name}
+            node={rootNode}
+            getNodes={getNodes}
+            onUpdateNodeTree={handelUpdateTree}
+            source={source}
+            index={0}
+            render={render}
+          />
+        ))}
+      </List>
     </Card>
   );
 };

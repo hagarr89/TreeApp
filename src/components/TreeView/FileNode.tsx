@@ -1,5 +1,5 @@
 import { ReactComponent as Loader } from "../../assets/loader.svg";
-import { INode } from "./index";
+import { IFile } from "../../services/fileSystem";
 import Avatar from "@mui/material/Avatar";
 import { faker } from "@faker-js/faker";
 
@@ -17,8 +17,8 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
 
-const getIcon = (node: INode) => {
-  if (node?.isGroup) return <Folder />;
+const getIcon = (node: IFile) => {
+  if (node?.type === "Folder") return <Folder />;
   return <File />;
 };
 export default function FileNode({
@@ -27,7 +27,7 @@ export default function FileNode({
   isLoading,
   index,
 }: {
-  node: INode;
+  node: IFile;
   isExpanded: boolean;
   isLoading: boolean;
   source?: string;
@@ -35,10 +35,11 @@ export default function FileNode({
 }) {
   const [color, setColor] = useState<string>();
   const icon = getIcon(node);
+  const isGroup = node?.type === "Folder";
   const loader = isLoading ? <Loader /> : null;
   const arrow = loader ? (
     loader
-  ) : node?.isGroup ? (
+  ) : isGroup ? (
     isExpanded ? (
       <ExpandLessIcon />
     ) : (
@@ -50,6 +51,7 @@ export default function FileNode({
     const bgColor = faker.color.rgb({ casing: "upper" });
     setColor(bgColor);
   }, []);
+
   return (
     <ListItemButton>
       <ListItem sx={{ paddingLeft: 2 * index }}>
@@ -59,7 +61,7 @@ export default function FileNode({
         <ListItemText
           classes={{ root: "pr" }}
           primary={node?.name}
-          secondary={node?.desc}
+          secondary={node?.size}
         />
         {arrow}
       </ListItem>

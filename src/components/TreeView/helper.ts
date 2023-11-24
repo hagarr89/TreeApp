@@ -1,8 +1,8 @@
 import {INode} from './index'
 import {IFile, fetchFiles} from '../../services/fileSystem'
 
-export const UpdateTree = (tree: INode[], newItem:INode):INode[] => {
-  return tree.map((item:INode) =>{
+export const UpdateTree = <T extends INode>(tree: T[], newItem:T):T[] => {
+  return tree.map((item) =>{
        return item?.name === newItem.name ? newItem : {
         ...(item?.children ? {...item, children: UpdateTree(item.children, newItem) } : item),
         }
@@ -10,30 +10,24 @@ export const UpdateTree = (tree: INode[], newItem:INode):INode[] => {
   }
 
 
-//Files helper to match node type to fix with file type
-export const replaceFilesToNode = (node: IFile) => {
-  const { name, size, type} = node;
-  const desc =  size;
-  return {
-    name,
-    ...(desc && {desc}),
-    isGroup: type === "Folder" ? true : false,
-  } 
-};
+// //Files helper to match node type to fix with file type
+// export const replaceFilesToNode = (node: IFile) => {
+//   const { name, size, type} = node;
+//   const desc =  size;
+//   return {
+//     name,
+//     ...(desc && {desc}),
+//     isGroup: type === "Folder" ? true : false,
+//   } 
+// };
 
 //Files helper to get files async
-export const getFiles = async (node?: INode) => {
-  console.log('getFiles' , node)
- let data:INode[] | null= null;
-  if (!node || node?.isGroup ) {
-     const res = (await fetchFiles()) as IFile[];
-     data =  res?.map((node: IFile) => replaceFilesToNode(node)) ?? [];
+export const getFiles= async (node?: IFile) => {
+  if (!node || node?.type === 'Folder' ) {
+     return  await fetchFiles() as IFile[];
   };
-     return data;
+     return null;
 };
-
-
-
 
   export const getDataFromLocalStorage = (source:string) => {
      const itemsStrinigfy = localStorage.getItem(source) as string ;
