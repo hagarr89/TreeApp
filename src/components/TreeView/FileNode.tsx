@@ -10,23 +10,21 @@ import {
   ListItemButton,
 } from "@mui/material";
 
-import Groups from "@mui/icons-material/Groups";
-import Person from "@mui/icons-material/Person";
+import Folder from "@mui/icons-material/Folder";
+import File from "@mui/icons-material/Article";
 
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
 
 const getIcon = (node: INode) => {
-  //ADD- new source type icons
-  if (node?.isGroup) return <Groups />;
-  return <Person />;
+  if (node?.isGroup) return <Folder />;
+  return <File />;
 };
-export default function NodeRow({
+export default function FileNode({
   node,
   isExpanded,
   isLoading,
-  source,
   index,
 }: {
   node: INode;

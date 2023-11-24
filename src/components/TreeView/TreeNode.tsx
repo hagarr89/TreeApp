@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import NodeRow from "./NodeRow";
 import { INode } from "./index";
 import { List, Collapse } from "@mui/material";
@@ -9,12 +9,14 @@ export const TreeNode = ({
   onUpdateNodeTree,
   source,
   index,
+  render,
 }: {
   node: INode;
   getNodes?: (node?: INode) => Promise<INode[] | null>;
   onUpdateNodeTree: (newNode: INode) => void;
   source?: string;
   index: number;
+  render: (data: INode) => ReactElement;
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,17 +42,13 @@ export const TreeNode = ({
   return (
     <div className="tree-node">
       <div onClick={onClickNode}>
-        <NodeRow
-          index={index}
-          node={node}
-          isLoading={isLoading}
-          isExpanded={isExpanded}
-          {...(source && { source })}
-        />
+        <div>{render({ node, index, isLoading, source, isExpanded })}</div>
       </div>
       <Collapse in={!isLoading && isExpanded} timeout="auto" unmountOnExit>
         <List className="child-nodes">
           {node?.children?.map((childNode) => (
+            // <TreeView key={index} data={childNode?.children} render={render} />
+
             <TreeNode
               key={childNode.name}
               node={childNode}
@@ -58,6 +56,7 @@ export const TreeNode = ({
               index={index + 1}
               onUpdateNodeTree={onUpdateNodeTree}
               {...(source && { source })}
+              render={render}
             />
           ))}
         </List>

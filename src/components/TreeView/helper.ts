@@ -23,6 +23,7 @@ export const replaceFilesToNode = (node: IFile) => {
 
 //Files helper to get files async
 export const getFiles = async (node?: INode) => {
+  console.log('getFiles' , node)
  let data:INode[] | null= null;
   if (!node || node?.isGroup ) {
      const res = (await fetchFiles()) as IFile[];

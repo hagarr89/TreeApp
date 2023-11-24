@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactElement } from "react";
 import { TreeNode } from "./TreeNode";
 import { Card } from "@mui/material";
 import "./index.scss";
 import { UpdateTree } from "./helper";
+import { IFile } from "../../services/fileSystem";
 
 export interface INode {
   name: string;
@@ -17,12 +18,14 @@ const TreeView = ({
   source,
   getDate,
   saveData,
+  render,
 }: {
-  data?: INode[] | null;
+  data?: INode[] | IFile[] | null;
   getNodes?: (node?: INode) => Promise<INode[] | null>;
   source?: string;
   getDate?: (source: string) => INode[];
   saveData?: (data: INode[], source: string) => void;
+  render: (data: INode) => ReactElement;
 }) => {
   const [treeData, setTreeData] = useState<INode[] | null>(data ? data : null);
 
@@ -59,6 +62,7 @@ const TreeView = ({
           onUpdateNodeTree={handelUpdateTree}
           source={source}
           index={0}
+          render={render}
         />
       ))}
     </Card>
