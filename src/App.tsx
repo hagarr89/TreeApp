@@ -5,40 +5,44 @@ import {
   getDataFromLocalStorage,
   saveDataOnLocalStorage,
 } from "./components/TreeView/helper";
-import FileNode from "./components/TreeView/FileNode";
-import NodeRow from "./components/TreeView/NodeRow";
+import { FileNode } from "./components/TreeView/FileNode";
+import { ITreeRow, NodeRow } from "./components/TreeView/NodeRow";
 import { IFile } from "./services/fileSystem";
 
+const renderNode = (data: ITreeRow<INode>) => {
+  const { node, index, isLoading, isExpanded } = data;
+
+  return (
+    <NodeRow
+      index={index}
+      node={node}
+      isLoading={isLoading}
+      isExpanded={isExpanded}
+    />
+  );
+};
+
+const renderFile = (data: ITreeRow<IFile>) => {
+  const { node, index, isLoading, isExpanded } = data;
+  return (
+    <FileNode
+      index={index}
+      node={node}
+      isLoading={isLoading}
+      isExpanded={isExpanded}
+    />
+  );
+};
+
 function App() {
-  const renderNode = (data: any) => {
-    const { node, index, isLoading, source, isExpanded } = data;
-    if (source && source === "FILES")
-      return (
-        <FileNode
-          index={index}
-          node={node}
-          isLoading={isLoading}
-          isExpanded={isExpanded}
-          {...(source && { source })}
-        />
-      );
-    return (
-      <NodeRow
-        index={index}
-        node={node}
-        isLoading={isLoading}
-        isExpanded={isExpanded}
-        {...(source && { source })}
-      />
-    );
-  };
   return (
     <div className="App">
       <TreeView<IFile>
         getNodes={getFiles}
         getDate={getDataFromLocalStorage}
         saveData={saveDataOnLocalStorage}
-        render={(data) => renderNode(data)}
+        render={(data) => renderFile(data)}
+        source="FILES"
       />
 
       <TreeView<INode> data={data} render={(data) => renderNode(data)} />

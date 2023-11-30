@@ -17,24 +17,24 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
 
+export interface ITreeRow<T> {
+  node: T;
+  isExpanded: boolean;
+  isLoading: boolean;
+  index: number;
+}
+
 const getIcon = (node: INode) => {
-  //ADD- new source type icons
   if (node?.isGroup) return <Groups />;
   return <Person />;
 };
-export default function NodeRow({
+
+export const NodeRow = ({
   node,
   isExpanded,
   isLoading,
-  source,
   index,
-}: {
-  node: INode;
-  isExpanded: boolean;
-  isLoading: boolean;
-  source?: string;
-  index: number;
-}) {
+}: ITreeRow<INode>) => {
   const [color, setColor] = useState<string>();
   const icon = getIcon(node);
   const loader = isLoading ? <Loader /> : null;
@@ -67,4 +67,4 @@ export default function NodeRow({
       </ListItem>
     </ListItemButton>
   );
-}
+};

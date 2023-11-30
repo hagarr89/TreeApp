@@ -1,6 +1,17 @@
 import { ReactElement, useState } from "react";
-import TreeView, { INode } from "./index";
+import { INode } from "./index";
+import { ITreeRow } from "./NodeRow";
 import { List, Collapse } from "@mui/material";
+import { JsxElement } from "typescript";
+
+export interface ITreeNode<T> {
+  node: T;
+  getNodes?: (node?: T) => Promise<T[] | null>;
+  onUpdateNodeTree: (newNode: T) => void;
+  source?: string;
+  index: number;
+  render: (data: ITreeRow<T>) => ReactElement;
+}
 
 export const TreeNode = <T extends INode>({
   node,
@@ -9,14 +20,7 @@ export const TreeNode = <T extends INode>({
   source,
   index,
   render,
-}: {
-  node: T;
-  getNodes?: (node?: T) => Promise<T[] | null>;
-  onUpdateNodeTree: (newNode: T) => void;
-  source?: string;
-  index: number;
-  render: (data: T) => ReactElement;
-}) => {
+}: ITreeNode<T>) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,15 +45,21 @@ export const TreeNode = <T extends INode>({
   return (
     <div className="tree-node">
       <div onClick={onClickNode}>
-        <div>{render({ node, index, isLoading, source, isExpanded })}</div>
+        <div>{render({ node, index: index, isLoading, isExpanded })}</div>
       </div>
       <Collapse in={!isLoading && isExpanded} timeout="auto" unmountOnExit>
-        <List className="child-nodes">
-          <TreeView<T>
-            // data={node?.children ?? null}
-            render={render}
-            getNodes={getNodes}
-          />
+        <List className="tree-node-list">
+          {node?.children?.map((childNode) => (
+            <TreeNode<T>
+              key={childNode.name}
+              node={childNode as T}
+              getNodes={getNodes}
+              onUpdateNodeTree={onUpdateNodeTree}
+              source={source}
+              index={index + 1}
+              render={render}
+            />
+          ))}
         </List>
       </Collapse>
     </div>

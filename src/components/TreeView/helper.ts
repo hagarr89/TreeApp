@@ -24,7 +24,7 @@ export const UpdateTree = <T extends INode>(tree: T[], newItem:T):T[] => {
 //Files helper to get files async
 export const getFiles= async (node?: IFile) => {
   if (!node || node?.type === 'Folder' ) {
-     return  await fetchFiles() as IFile[];
+     return await fetchFiles() as IFile[];
   };
      return null;
 };
@@ -39,6 +39,7 @@ export const getFiles= async (node?: IFile) => {
   };
 
   export const saveDataOnLocalStorage = <T>(data:T[] ,source:string ) => {
+    console.log('saveDataOnLocalStorage');
     if(source) localStorage.setItem(source, JSON.stringify(data));
   
   };
