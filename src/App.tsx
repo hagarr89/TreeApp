@@ -1,7 +1,7 @@
 import TreeView, { INode } from "./components/TreeView";
 import { data } from "./data";
-import { FileNode } from "./components/TreeView/FilesTree/FileNode";
-import { ITreeRow, NodeRow } from "./components/TreeView/NodeRow";
+import { FileNode } from "./components/TreeView/NodeType/FileNode";
+import { ITreeRow, NodeRow } from "./components/TreeView/NodeType/NodeRow";
 import { IFile } from "./services/fileSystem";
 import { useFiels } from "./hooks/useFiels";
 

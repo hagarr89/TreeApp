@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
 import { INode } from "./index";
-import { ITreeRow } from "./NodeRow";
+import { ITreeRow } from "./NodeType/NodeRow";
 import { List, Collapse } from "@mui/material";
 
 export interface ITreeNode<T> {

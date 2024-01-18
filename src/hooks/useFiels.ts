@@ -7,7 +7,7 @@ export const useFiels = () => {
 
   const loadFiels = async () => {
     try {
-      const res: IFile[] | null = (await fetchFiels())
+      const res: IFile[] | null = (await handelFetchFiels())
       if (res) {
         setValue(res);
       }

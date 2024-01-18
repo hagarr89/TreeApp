@@ -3,7 +3,7 @@ import { TreeNode } from "./TreeNode";
 import { Card } from "@mui/material";
 import "./index.scss";
 import { List } from "@mui/material";
-import { ITreeRow } from "./NodeRow";
+import { ITreeRow } from "./NodeType/NodeRow";
 import { INode } from ".";
 import useTreeUpdate from "../../hooks/useTreeUpdater";
 

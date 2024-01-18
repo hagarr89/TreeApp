@@ -1,8 +1,7 @@
-import { ReactComponent as Loader } from "../../assets/loader.svg";
-import { INode } from "./index";
+import { ReactComponent as Loader } from "../../../assets/loader.svg";
+import { IFile } from "../../../services/fileSystem";
 import Avatar from "@mui/material/Avatar";
 import { faker } from "@faker-js/faker";
-
 import {
   ListItemAvatar,
   ListItemText,
@@ -10,37 +9,32 @@ import {
   ListItemButton,
 } from "@mui/material";
 
-import Groups from "@mui/icons-material/Groups";
-import Person from "@mui/icons-material/Person";
+import Folder from "@mui/icons-material/Folder";
+import File from "@mui/icons-material/Article";
 
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
+import { ITreeRow } from "./NodeRow";
 
-export interface ITreeRow<T> {
-  node: T;
-  isExpanded: boolean;
-  isLoading: boolean;
-  index: number;
-}
-
-const getIcon = (node: INode) => {
-  if (node?.isGroup) return <Groups />;
-  return <Person />;
+const getIcon = (node: IFile) => {
+  if (node?.type === "Folder") return <Folder />;
+  return <File />;
 };
-
-export const NodeRow = ({
+export const FileNode = ({
   node,
   isExpanded,
   isLoading,
   index,
-}: ITreeRow<INode>) => {
+}: ITreeRow<IFile>) => {
   const [color, setColor] = useState<string>();
   const icon = getIcon(node);
+  const isGroup = node?.type === "Folder";
+
   const loader = isLoading ? <Loader /> : null;
   const arrow = loader ? (
     loader
-  ) : node?.isGroup ? (
+  ) : isGroup ? (
     isExpanded ? (
       <ExpandLessIcon />
     ) : (
@@ -52,6 +46,7 @@ export const NodeRow = ({
     const bgColor = faker.color.rgb({ casing: "upper" });
     setColor(bgColor);
   }, []);
+
   return (
     <ListItemButton>
       <ListItem sx={{ paddingLeft: 2 * index }}>
@@ -61,7 +56,7 @@ export const NodeRow = ({
         <ListItemText
           classes={{ root: "pr" }}
           primary={node.name}
-          secondary={node?.desc}
+          secondary={node?.size}
         />
         {arrow}
       </ListItem>
