@@ -4,7 +4,6 @@ import { FileNode } from "./components/TreeView/FilesTree/FileNode";
 import { ITreeRow, NodeRow } from "./components/TreeView/NodeRow";
 import { IFile } from "./services/fileSystem";
 import { useFiels } from "./hooks/useFiels";
-import { useEffect } from "react";
 
 const renderNode = (data: ITreeRow<INode>) => {
   return <NodeRow {...data} />;
@@ -16,9 +15,7 @@ const renderFile = (data: ITreeRow<IFile>) => {
 
 function App() {
   const { saveFiels, fiels, fetchFiels } = useFiels();
-  useEffect(() => {
-    console.log("fiels updated", fiels);
-  }, [fiels]);
+
   return (
     <div className="App">
       {fiels.length ? (

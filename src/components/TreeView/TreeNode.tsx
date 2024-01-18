@@ -1,11 +1,11 @@
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useState } from "react";
 import { INode } from "./index";
 import { ITreeRow } from "./NodeRow";
 import { List, Collapse } from "@mui/material";
 
 export interface ITreeNode<T> {
   node: T;
-  onUpdateTree?: (node: T) => Promise<void>;
+  onUpdateTree?: (node: T) => Promise<boolean>;
   index: number;
   render: (data: ITreeRow<T>) => ReactElement;
 }
@@ -19,19 +19,26 @@ export const TreeNode = <T extends INode>({
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const onClickNode = async () => {
+  const onClickNode = () => {
     if (node?.children) {
       setIsExpanded(!isExpanded);
     } else {
-      if (onUpdateTree) {
-        setIsLoading(true);
-        await onUpdateTree(node);
-        setIsExpanded(!isExpanded);
-        setIsLoading(false);
-      }
+      updateTree();
     }
   };
 
+  const updateTree = async () => {
+    if (!onUpdateTree) return;
+    try {
+      setIsLoading(true);
+      const res = await onUpdateTree(node);
+      if (res) setIsExpanded(!isExpanded);
+    } catch {
+      console.log("no updatetree function was found");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="tree-node">
       <div onClick={onClickNode}>

@@ -7,16 +7,18 @@ const useTreeUpdater = <T extends INode>(initialData: T[]) => {
 
   const fetchChildren = async (
     node: T,
-    fetchFunction: (node: T) => Promise<T[]> | null
+    fetchFunction: (node: T) => Promise<T[]|null> 
   ) => {
     try {
       // Call the fetch function to get new nodes
       const newNodes = await fetchFunction(node) ?? null;
       if(newNodes) setTreeData(updateTreeNode(treeData, node?.name , newNodes))
+      return newNodes
     } catch (error) {
       console.error("Error fetching children:", error);
     }
-    
+          return false
+
   };
 
   const updateTreeNode = (tree: T[], nodeId: string, updates: T[]): T[] => {

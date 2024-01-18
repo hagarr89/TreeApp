@@ -30,7 +30,6 @@ export const FileNode = ({
   const [color, setColor] = useState<string>();
   const icon = getIcon(node);
   const isGroup = node?.type === "Folder";
-  // console.log("isLoading", isLoading);
 
   const loader = isLoading ? <Loader /> : null;
   const arrow = loader ? (

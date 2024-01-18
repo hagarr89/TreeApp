@@ -14,19 +14,17 @@ const Tree = <T extends INode>({
   OnRender,
 }: {
   data: T[];
-  fetchFiels?: (node: T) => Promise<T[]>;
+  fetchFiels?: (node: T) => Promise<T[] | null>;
   saveFiels?: (data: T[]) => void;
   OnRender: (data: ITreeRow<T>) => ReactElement;
 }) => {
   const { treeData, fetchChildren } = useTreeUpdate(data ?? []);
 
   const handelUpdateTree = async (node: T) => {
-    if (!treeData || !node || !fetchFiels) return;
-    try {
-      await fetchChildren(node, fetchFiels);
-    } catch {
-      console.log("no fetch function has been assaigned");
-    }
+    if (!treeData || !node || !fetchFiels) return false;
+
+    const isFetched = await fetchChildren(node, fetchFiels);
+    return !!isFetched;
   };
 
   useEffect(() => {

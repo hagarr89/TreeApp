@@ -17,11 +17,6 @@ const useLocalStorage = <T,>(
   });
 
   useEffect(() => {
-    // console.log(
-    //   "uselocalStorage key and storevalue updatet ",
-    //   key,
-    //   storedValue
-    // );
     try {
       window.localStorage.setItem(key, JSON.stringify(storedValue));
     } catch (error) {
@@ -31,7 +26,6 @@ const useLocalStorage = <T,>(
 
   const setValue: SetValue<T> = (value) => {
     try {
-      // console.log("setValue storedValue", storedValue);
       setStoredValue(
         value instanceof Function
           ? (value as (val: T) => T)(storedValue)
