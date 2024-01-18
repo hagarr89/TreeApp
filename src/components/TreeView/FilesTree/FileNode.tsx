@@ -1,5 +1,5 @@
-import { ReactComponent as Loader } from "../../assets/loader.svg";
-import { IFile } from "../../services/fileSystem";
+import { ReactComponent as Loader } from "../../../assets/loader.svg";
+import { IFile } from "../../../services/fileSystem";
 import Avatar from "@mui/material/Avatar";
 import { faker } from "@faker-js/faker";
 import {
@@ -15,7 +15,7 @@ import File from "@mui/icons-material/Article";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
-import { ITreeRow } from "./NodeRow";
+import { ITreeRow } from "../NodeRow";
 
 const getIcon = (node: IFile) => {
   if (node?.type === "Folder") return <Folder />;
@@ -30,6 +30,8 @@ export const FileNode = ({
   const [color, setColor] = useState<string>();
   const icon = getIcon(node);
   const isGroup = node?.type === "Folder";
+  // console.log("isLoading", isLoading);
+
   const loader = isLoading ? <Loader /> : null;
   const arrow = loader ? (
     loader

@@ -6,16 +6,16 @@ export interface IFile {
     size?:string;
 }
 
+
 // fake api call for files
- export const fetchFiles = ()=>{
-       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-               resolve(genrateFiles()); // Simulate the response object
-        }, 1000);
+export const fetchFilesFromServer = ()=>{
+    return new Promise((resolve, reject) => {
+    setTimeout(() => {  
+         resolve(genrateFiles()); // Simulate the response object
+    }, 2000);
     });
 }
 
-//genrate
 
 const genrateFile = () => {
     const fileName = faker.system.commonFileName();
@@ -57,4 +57,3 @@ const genertaeFileType = (typeFile:string)=>{
     }
     
 }
-
