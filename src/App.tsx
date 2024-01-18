@@ -14,15 +14,15 @@ const renderFile = (data: ITreeRow<IFile>) => {
 };
 
 function App() {
-  const { saveFiels, fiels, fetchFiels } = useFiels();
+  const { fiels, handelSaveFiels, handelFetchFiels } = useFiels();
 
   return (
     <div className="App">
       {fiels.length ? (
         <TreeView<IFile>
           data={fiels}
-          fetchFiels={fetchFiels}
-          saveFiels={saveFiels}
+          onFetchFiels={handelFetchFiels}
+          onSaveFiels={handelSaveFiels}
           OnRender={(data) => renderFile(data)}
         />
       ) : null}

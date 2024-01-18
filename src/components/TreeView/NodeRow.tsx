@@ -60,7 +60,7 @@ export const NodeRow = ({
         </ListItemAvatar>
         <ListItemText
           classes={{ root: "pr" }}
-          primary={node?.name}
+          primary={node.name}
           secondary={node?.desc}
         />
         {arrow}

@@ -55,7 +55,7 @@ export const FileNode = ({
         </ListItemAvatar>
         <ListItemText
           classes={{ root: "pr" }}
-          primary={node?.name}
+          primary={node.name}
           secondary={node?.size}
         />
         {arrow}

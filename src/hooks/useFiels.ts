@@ -15,7 +15,7 @@ export const useFiels = () => {
     }
   };
 
-  const fetchFiels = async (node?: IFile) => {
+  const handelFetchFiels = async (node?: IFile) => {
     try {
       if (!node || node?.type === "Folder") {
         const nodes = (await fetchFilesFromServer()) as IFile[];
@@ -27,7 +27,7 @@ export const useFiels = () => {
     return null;
   };
 
-  const saveFiels = (nodes: IFile[] | []) => {
+  const handelSaveFiels = (nodes: IFile[] | []) => {
     setValue(nodes);
   };
 
@@ -37,7 +37,7 @@ export const useFiels = () => {
 
   return {
     fiels:storeValue,
-    fetchFiels,
-    saveFiels,
+    handelFetchFiels,
+    handelSaveFiels,
   };
 };

@@ -9,27 +9,27 @@ import useTreeUpdate from "../../hooks/useTreeUpdater";
 
 const Tree = <T extends INode>({
   data,
-  fetchFiels,
-  saveFiels,
+  onFetchFiels,
+  onSaveFiels,
   OnRender,
 }: {
   data: T[];
-  fetchFiels?: (node: T) => Promise<T[] | null>;
-  saveFiels?: (data: T[]) => void;
+  onFetchFiels?: (node: T) => Promise<T[] | null>;
+  onSaveFiels?: (data: T[]) => void;
   OnRender: (data: ITreeRow<T>) => ReactElement;
 }) => {
   const { treeData, fetchChildren } = useTreeUpdate(data ?? []);
 
   const handelUpdateTree = async (node: T) => {
-    if (!treeData || !node || !fetchFiels) return false;
+    if (!onFetchFiels) return false;
 
-    const isFetched = await fetchChildren(node, fetchFiels);
+    const isFetched = await fetchChildren(node, onFetchFiels);
     return !!isFetched;
   };
 
   useEffect(() => {
-    saveFiels && saveFiels(treeData);
-  }, [treeData, saveFiels]);
+    onSaveFiels && onSaveFiels(treeData);
+  }, [treeData, onSaveFiels]);
 
   return (
     <Card classes={{ root: "tree" }}>
