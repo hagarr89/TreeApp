@@ -1,6 +1,7 @@
-import { ReactComponent as Loader } from "../../assets/loader.svg";
-import { INode } from "./index";
+import { ReactComponent as Loader } from "../../../assets/loader.svg";
+import { IFile } from "../../../services/fileSystem";
 import Avatar from "@mui/material/Avatar";
+import { faker } from "@faker-js/faker";
 import {
   ListItemAvatar,
   ListItemText,
@@ -11,59 +12,54 @@ import {
 import Folder from "@mui/icons-material/Folder";
 import File from "@mui/icons-material/Article";
 
-import Groups from "@mui/icons-material/Groups";
-import Person from "@mui/icons-material/Person";
-
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useEffect, useState } from "react";
+import { ITreeRow } from "./NodeRow";
 
-const getIcon = (node: INode, sourceName?: string) => {
-  if (sourceName === "FILES") {
-    if (node?.isGroup) return <Folder />;
-    return <File />;
-  }
-  //ADD- new source type icons
-  if (node?.isGroup) return <Groups />;
-  return <Person />;
+const getIcon = (node: IFile) => {
+  if (node?.type === "Folder") return <Folder />;
+  return <File />;
 };
-
-export default function NodeRow({
+export const FileNode = ({
   node,
   isExpanded,
   isLoading,
-  sourceName,
   index,
-}: {
-  node: INode;
-  isExpanded: boolean;
-  isLoading: boolean;
-  sourceName?: string;
-  index: number;
-}) {
-  const icon = getIcon(node, sourceName && sourceName);
+}: ITreeRow<IFile>) => {
+  const [color, setColor] = useState<string>();
+  const icon = getIcon(node);
+  const isGroup = node?.type === "Folder";
+
   const loader = isLoading ? <Loader /> : null;
   const arrow = loader ? (
     loader
-  ) : node?.isGroup ? (
+  ) : isGroup ? (
     isExpanded ? (
       <ExpandLessIcon />
     ) : (
       <ExpandMoreIcon />
     )
   ) : null;
+
+  useEffect(() => {
+    const bgColor = faker.color.rgb({ casing: "upper" });
+    setColor(bgColor);
+  }, []);
+
   return (
     <ListItemButton>
       <ListItem sx={{ paddingLeft: 2 * index }}>
         <ListItemAvatar>
-          <Avatar sx={{ bgcolor: node?.color }}>{icon}</Avatar>
+          <Avatar sx={{ bgcolor: color }}>{icon}</Avatar>
         </ListItemAvatar>
         <ListItemText
           classes={{ root: "pr" }}
-          primary={node?.name}
-          secondary={node?.desc}
+          primary={node.name}
+          secondary={node?.size}
         />
         {arrow}
       </ListItem>
     </ListItemButton>
   );
-}
+};

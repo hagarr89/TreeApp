@@ -3,20 +3,19 @@ import { faker } from '@faker-js/faker';
 export interface IFile {
     name:string;
     type:string;
-    color:string;
     size?:string;
 }
 
+
 // fake api call for files
- export const fetchFiles = ()=>{
-       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-               resolve(genrateFiles()); // Simulate the response object
-        }, 1000);
+export const fetchFilesFromServer = ()=>{
+    return new Promise((resolve, reject) => {
+    setTimeout(() => {  
+         resolve(genrateFiles()); // Simulate the response object
+    }, 2000);
     });
 }
 
-//genrate
 
 const genrateFile = () => {
     const fileName = faker.system.commonFileName();
@@ -55,8 +54,6 @@ const genertaeFileType = (typeFile:string)=>{
     return {
        ...(size && {size}),
         type,
-        color:faker.color.rgb({ casing: 'upper' })
     }
     
 }
-
