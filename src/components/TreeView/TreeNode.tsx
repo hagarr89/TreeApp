@@ -1,8 +1,7 @@
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import { INode } from "./index";
-import { ITreeRow, NodeRow } from "./NodeType/NodeRow";
+import { ITreeRow } from "./NodeType/NodeRow";
 import { List, Collapse } from "@mui/material";
-import { faker } from "@faker-js/faker";
 
 export interface ITreeNode<T> {
   node: T;
