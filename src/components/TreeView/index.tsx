@@ -6,5 +6,6 @@ export interface INode {
   children?: INode[];
   desc?: string;
   color?: string;
+  visability?: true;
 }
 export default Tree;

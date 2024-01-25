@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useMemo } from "react";
 import { TreeNode } from "./TreeNode";
 import { Card } from "@mui/material";
 import "./index.scss";
@@ -6,17 +6,20 @@ import { List } from "@mui/material";
 import { ITreeRow } from "./NodeType/NodeRow";
 import { INode } from ".";
 import useTreeUpdate from "../../hooks/useTreeUpdater";
+import useSearch from "../../hooks/useSearch";
 
 const Tree = <T extends INode>({
   data,
   onFetchFiels,
   onSaveFiels,
   OnRender,
+  searchStr,
 }: {
   data: T[];
   onFetchFiels?: (node: T) => Promise<T[] | null>;
   onSaveFiels?: (data: T[]) => void;
   OnRender: (data: ITreeRow<T>) => ReactElement;
+  searchStr: string;
 }) => {
   const { treeData, fetchChildren } = useTreeUpdate(data ?? []);
 
@@ -27,6 +30,11 @@ const Tree = <T extends INode>({
     return !!isFetched;
   };
 
+  const searchData = useSearch<INode>({
+    data: treeData,
+    searchStr,
+  });
+
   useEffect(() => {
     onSaveFiels && onSaveFiels(treeData);
   }, [treeData, onSaveFiels]);
@@ -34,7 +42,7 @@ const Tree = <T extends INode>({
   return (
     <Card classes={{ root: "tree" }}>
       <List className="tree-node-list">
-        {treeData?.map((rootNode) => (
+        {searchData?.map((rootNode) => (
           <TreeNode<T>
             key={rootNode.name}
             node={rootNode}
