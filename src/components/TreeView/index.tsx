@@ -5,5 +5,6 @@ export interface INode {
   isGroup?: boolean;
   children?: INode[];
   desc?: string;
+  color?: string;
 }
 export default Tree;
