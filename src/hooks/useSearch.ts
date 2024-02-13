@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
+import { INodeBase } from "../components/TreeView";
 
-export interface ISearchDefualtProps<T> {
-  name:string;
-  children?:T[]
-}
-export interface ISearch<T extends  ISearchDefualtProps<T>> {
+
+export interface ISearch<T extends  INodeBase> {
   data:T[] | null;
   searchStr:string;
 } 
-function useSearch<T extends  ISearchDefualtProps<T>>({data , searchStr}:ISearch<T>) {
+function useSearch<T extends  INodeBase>({data , searchStr}:ISearch<T>) {
   const [searchData, setSearchData] = useState<T[]|[]>(data ??  [] );
 
 

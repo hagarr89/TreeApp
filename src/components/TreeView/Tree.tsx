@@ -4,11 +4,11 @@ import { Card } from "@mui/material";
 import "./index.scss";
 import { List } from "@mui/material";
 import { ITreeRow } from "./NodeType/NodeRow";
-import { INode } from ".";
+import { INodeBase } from ".";
 import useTreeUpdate from "../../hooks/useTreeUpdater";
 import useSearch from "../../hooks/useSearch";
 
-const Tree = <T extends INode>({
+const Tree = <T extends INodeBase>({
   data,
   onFetchFiels,
   onSaveFiels,
@@ -30,7 +30,7 @@ const Tree = <T extends INode>({
     return !!isFetched;
   };
 
-  const searchData = useSearch<INode>({
+  const searchData = useSearch<T>({
     data: treeData,
     searchStr,
   });

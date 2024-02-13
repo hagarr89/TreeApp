@@ -1,9 +1,12 @@
 import Tree from "./Tree";
 
-export interface INode {
+export interface INodeBase {
   name: string;
+  children: INodeBase[];
+}
+export interface INode extends INodeBase {
   isGroup?: boolean;
-  children?: INode[];
   desc?: string;
 }
+
 export default Tree;
