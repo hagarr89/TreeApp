@@ -3,7 +3,7 @@ import { INodeBase } from "../components/TreeView";
 
 
 export interface ISearch<T extends  INodeBase> {
-  data:T[] | null;
+  data:T[] | [];
   searchStr:string;
 } 
 function useSearch<T extends  INodeBase>({data , searchStr}:ISearch<T>) {

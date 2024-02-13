@@ -2,7 +2,7 @@ import Tree from "./Tree";
 
 export interface INodeBase {
   name: string;
-  children: INodeBase[];
+  children?: INodeBase[];
 }
 export interface INode extends INodeBase {
   isGroup?: boolean;

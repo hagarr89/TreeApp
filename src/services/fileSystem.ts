@@ -4,6 +4,7 @@ export interface IFile {
     name:string;
     type:string;
     size?:string;
+    children?:IFile[];
 }
 
 

@@ -1,8 +1,8 @@
 // useTreeUpdater.js
 import { useState } from "react";
-import { INode } from "../components/TreeView";
+import {  INodeBase } from "../components/TreeView";
 
-const useTreeUpdater = <T extends INode>(initialData: T[]) => {
+const useTreeUpdater = <T extends INodeBase>(initialData: T[]) => {
   const [treeData, setTreeData] = useState(initialData);
 
   const fetchChildren = async (
