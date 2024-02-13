@@ -9,28 +9,34 @@ export interface ISearch<T extends  ISearchDefualtProps<T>> {
   searchStr:string;
 } 
 function useSearch<T extends  ISearchDefualtProps<T>>({data , searchStr}:ISearch<T>) {
-  const [searchData, setSearchData] = useState<T[]|null>(data);
+  const [searchData, setSearchData] = useState<T[]|[]>(data ??  [] );
 
 
   useEffect(() => {
-    console.log('searchStr updates' , searchStr)
-    if(data) filterByName(data);
+    if(data) {
+      const filterNodes = searchTreeNode(data);
+      setSearchData(filterNodes)
+    }
   }, [searchStr , data]);
 
 
-  const filterByName = (data:T[])=>{
-    const res:T[]  =  data  
-        ?.filter((item) => item?.name?.toLowerCase().indexOf(searchStr.toLocaleLowerCase()) > -1)
-        ?.map((item) => ({
-        ...item,
-        ...(item?.children && {children: filterByName(item.children) })
-        }))
-        setSearchData(res);
-        return res;
-  }
+  const searchTreeNode = (data:T[]) => {
+    return data.reduce((acc:T[], node:T) => {
+     const isMatching = node.name.toLowerCase().includes(searchStr.toLowerCase());
+      if (isMatching) {
+         acc.push(node);
+      } else if (node.children && node.children.length > 0) {
+        //serach in inner childes for every node if exsist in inner child
+        const newNodes = searchTreeNode(node.children);
+        if (newNodes.length > 0) {
+          acc.push({ ...node, children: newNodes });
+        }
+      }
 
-
-
+      return acc;
+    }, []);
+  
+}
   return searchData
 }
 
